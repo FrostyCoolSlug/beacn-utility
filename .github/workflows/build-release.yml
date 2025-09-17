@@ -51,12 +51,22 @@ jobs:
           sudo apt update
           sudo apt install -y flatpak flatpak-builder
 
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+
       - name: "Build Flatpak"
         run: |
           flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
           flatpak-builder --user --repo=beacn-repo --install-deps-from=flathub --force-clean build-dir io.github.beacn_on_linux.beacn-utility.yml
-          flatpak build-bundle --arch=x86_64 --repo-url=https://frostycoolslug.github.io/repo-test/flatpak --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo ./beacn-repo beacn-utility-${{ needs.get_version.outputs.version }}-x86_64.flatpak io.github.beacn_on_linux.beacn-utility
+          
+          # Sign the repository
+          flatpak build-sign beacn-repo "Beacn on Linux"
+          
+          flatpak build-bundle --arch=x86_64 --repo-url=https://frostycoolslug.github.io/repo-test/flatpak/beacn-on-linux.flatpakrepo --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo ./beacn-repo beacn-utility-${{ needs.get_version.outputs.version }}-x86_64.flatpak io.github.beacn_on_linux.beacn-utility
         shell: bash
 
       - name: "Upload Flatpak Artifact"
