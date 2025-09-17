@@ -66,7 +66,7 @@ jobs:
           # Sign the repository
           flatpak build-sign beacn-repo --gpg-sign="Beacn on Linux"
           
-          flatpak build-bundle --arch=x86_64 --repo-url=https://frostycoolslug.github.io/repo-test/flatpak/beacn-on-linux.flatpakrepo --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo ./beacn-repo beacn-utility-${{ needs.get_version.outputs.version }}-x86_64.flatpak io.github.beacn_on_linux.beacn-utility
+          flatpak build-bundle --arch=x86_64 --repo-url=https://frostycoolslug.github.io/repo-test/flatpak/ --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo ./beacn-repo beacn-utility-${{ needs.get_version.outputs.version }}-x86_64.flatpak io.github.beacn_on_linux.beacn-utility
         shell: bash
 
       - name: "Upload Flatpak Artifact"
