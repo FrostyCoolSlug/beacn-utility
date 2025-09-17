@@ -52,10 +52,8 @@ jobs:
           sudo apt install -y flatpak flatpak-builder
 
       - name: Import GPG key
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         run: |
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
 
       - name: "Build Flatpak"
         run: |
