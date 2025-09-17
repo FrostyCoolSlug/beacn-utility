@@ -55,11 +55,8 @@ jobs:
         run: |
           flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-          
           flatpak-builder --user --repo=beacn-repo --install-deps-from=flathub --force-clean build-dir io.github.beacn_on_linux.beacn-utility.yml
-          
-          # --repo-url=URL - We can use this to automatically install the flatpak repository
-          flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo ./beacn-repo beacn-utility-${{ needs.get_version.outputs.version }}-x86_64.flatpak io.github.beacn_on_linux.beacn-utility
+          flatpak build-bundle --arch=x86_64 --repo-url=https://frostycoolslug.github.io/repo-test/flatpak --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo ./beacn-repo beacn-utility-${{ needs.get_version.outputs.version }}-x86_64.flatpak io.github.beacn_on_linux.beacn-utility
         shell: bash
 
       - name: "Upload Flatpak Artifact"
